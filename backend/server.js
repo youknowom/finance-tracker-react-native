@@ -28,7 +28,15 @@ async function initDB() {
     process.exit(1); // 1 = failure
   }
 }
-
+app.get("/api/transactions/:userId", async (req, res) => {
+  try {
+    const { user_Id } = req.params;
+    const transactions = await sql`
+    SELECT * FROM transactions WHERE user_id = ${user_Id} ORDER BY created_at DESC
+    `;
+    res.status(200).json(transactions);
+  } catch (error) {}
+});
 app.post("/api/transactions", async (req, res) => {
   try {
     const { title, amount, category, user_id } = req.body;
