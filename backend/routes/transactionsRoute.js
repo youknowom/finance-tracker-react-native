@@ -1,9 +1,9 @@
 import express from "express";
-import { sql } from "../config/db";
+import { sql } from "../config/db.js";
 
 const router = express.Router();
 
-router.get("/api/transactions/:userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const transactions = await sql`
@@ -18,7 +18,7 @@ router.get("/api/transactions/:userId", async (req, res) => {
   }
 });
 
-router.post("/api/transactions", async (req, res) => {
+router.post("/transactions", async (req, res) => {
   try {
     const { title, amount, category, user_id } = req.body;
 
@@ -39,7 +39,7 @@ router.post("/api/transactions", async (req, res) => {
   }
 });
 
-router.delete("/api/transactions/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     if (isNaN(parseInt(id))) {
@@ -63,7 +63,7 @@ router.delete("/api/transactions/:id", async (req, res) => {
   }
 });
 
-router.get("/api/transactions/summary/:userId", async (req, res) => {
+router.get("/summary/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 

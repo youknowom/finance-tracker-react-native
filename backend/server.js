@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { sql } from "./config/db.js";
 import ratelimiter from "./middleware/rateLimiter.js";
 
+import transactionsRoutes from "./routes/transactionsRoute.js";
 dotenv.config();
 
 const app = express();
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
   res.send("its working");
 });
 
+app.use("/api/transactions", transactionsRoutes);
 initDB().then(() => {
   app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
