@@ -28,6 +28,10 @@ async function initDB() {
     process.exit(1); // 1 = failure
   }
 }
+
+app.get("/", (req, res) => {
+  res.send("its working");
+});
 app.get("/api/transactions/:userId", async (req, res) => {
   try {
     const { user_Id } = req.params;
@@ -56,6 +60,19 @@ app.post("/api/transactions", async (req, res) => {
     res.status(201).json(transaction[0]); // return the inserted row
   } catch (error) {
     console.log("Error creating the transaction", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+app.delete("/api/transactions/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await sql`
+    DELETE FROM transactions WHERE id = ${id} RETURNING *`;
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Transaction not found" });
+    }
+  } catch (error) {
+    console.log("Error delating the transaction", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
