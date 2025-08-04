@@ -32,6 +32,7 @@ async function initDB() {
 app.get("/", (req, res) => {
   res.send("its working");
 });
+
 app.get("/api/transactions/:userId", async (req, res) => {
   try {
     const { user_Id } = req.params;
@@ -41,6 +42,7 @@ app.get("/api/transactions/:userId", async (req, res) => {
     res.status(200).json(transactions);
   } catch (error) {}
 });
+
 app.post("/api/transactions", async (req, res) => {
   try {
     const { title, amount, category, user_id } = req.body;
@@ -63,9 +65,13 @@ app.post("/api/transactions", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 app.delete("/api/transactions/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    if (isNaN(parseInt(id))) {
+      return res.status(400).json({ message: "Invalid transactions" });
+    }
     const result = await sql`
     DELETE FROM transactions WHERE id = ${id} RETURNING *`;
     if (result.length === 0) {
