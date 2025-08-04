@@ -17,6 +17,9 @@ export default function Index() {
         style={{ width: 150, height: 150, borderRadius: 10 }}
         source={require("@/assets/images/pfp.jpg")}
       />
+      <view>
+        <Text>Hi</Text>
+      </view>
     </View>
   );
 }
