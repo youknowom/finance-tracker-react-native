@@ -83,6 +83,27 @@ app.delete("/api/transactions/:id", async (req, res) => {
   }
 });
 
+app.get("/api/transactions/summary/:userid", async (req, res) => {
+  try {
+    const { user_Id } = req.params;
+    const balanceResult = await sql`
+    SELECT COALESCE(SUM(amount),0)as balance FROM transactions WHERE user_id = ${user_Id}`;
+    const incomeResult = await sql`
+    SELECT COALESCE(SUM(amount)0)as income FROM transactions
+    WHERE user_id = ${user_Id} AND amount > 0`;
+    const expenseResult = await sql`
+    SELECT COALESCE(SUM(amount),0)as expenses FROM transactions
+    WHERE user_id = ${user_Id} AND amount < 0`;
+    res.status(200).json({
+      balance: balanceResult[0].balance,
+      income: incomeResult[0].income,
+      incomeResult: expenseResult[0].expense,
+    });
+  } catch (error) {
+    console.log("Error delating the transaction", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 initDB().then(() => {
   app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
