@@ -9,9 +9,14 @@ export default function Page() {
   return (
     <View>
       <SignedIn>
-        <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
+        {user?.emailAddresses?.[0]?.emailAddress ? (
+          <Text>Hello {user.emailAddresses[0].emailAddress}</Text>
+        ) : (
+          <Text>Loading...</Text>
+        )}
         <SignOutButton />
       </SignedIn>
+
       <SignedOut>
         <Link href="/(auth)/sign-in">
           <Text>Sign in</Text>
