@@ -83,7 +83,7 @@ export default function SignUpScreen() {
       <View style={styles.container}>
         <Image
           source={require("../../assets/images/revenue-i2.png")}
-          style={styles.illustraion}
+          style={styles.illustration}
         />
         <Text>Sign up</Text>
         <TextInput
