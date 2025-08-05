@@ -79,7 +79,7 @@ export default function Page() {
         </TouchableOpacity>
 
         <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Don&apos; have an accont?</Text>
+          <Text style={styles.footerText}>Don't have an accont?</Text>
           <Link href="/sign-up" asChild>
             <TouchableOpacity>
               <Text style={styles.linkText}>Sign Up</Text>
