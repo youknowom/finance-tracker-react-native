@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { styles } from "@assets/styles/auth.styles.js";
 import { COLORS } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
@@ -79,7 +81,12 @@ export default function SignUpScreen() {
   }
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <KeyboardAwareScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{ flexGrow: 1 }}
+      enableOnAndroid={true}
+      enableAutomaticScroll={true}
+    >
       <View style={styles.container}>
         <Image
           source={require("../../assets/images/revenue-i2.png")}
@@ -123,6 +130,6 @@ export default function SignUpScreen() {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
