@@ -12,7 +12,7 @@ export default function Page() {
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState(""); // ✅ added
+  const [error, setError] = React.useState("");
 
   const onSignInPress = async () => {
     if (!isLoaded) return;
@@ -57,25 +57,33 @@ export default function Page() {
             </TouchableOpacity>
           </View>
         ) : null}
+
         <TextInput
+          style={[styles.input, error && styles.errorInput]}
           autoCapitalize="none"
           value={emailAddress}
+          placeholderTextColor="#9AB478"
           placeholder="Enter email"
-          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+          onChangeText={(email) => setEmailAddress(email)}
         />
         <TextInput
+          style={[styles.input, error && styles.errorInput]}
           value={password}
-          placeholder="Enter password"
+          placeholder="Enter Password"
+          placeholderTextColor="#9AB478"
           secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
         />
-        <TouchableOpacity onPress={onSignInPress}>
-          <Text>Continue</Text>
+        <TouchableOpacity style={styles.button} onPress={onSignInPress}>
+          <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
-        <View style={{ flexDirection: "row", gap: 4, marginTop: 10 }}>
-          <Text>Don’t have an account?</Text>
-          <Link href="/(auth)/sign-up">
-            <Text>Sign up</Text>
+
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>Don&apos; have an accont?</Text>
+          <Link href="/sign-up" asChild>
+            <TouchableOpacity>
+              <Text style={styles.linkText}>Sign Up</Text>
+            </TouchableOpacity>
           </Link>
         </View>
       </View>
