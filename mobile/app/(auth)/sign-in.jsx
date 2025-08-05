@@ -42,30 +42,42 @@ export default function Page() {
       enableOnAndroid={true}
       enableAutomaticScroll={true}
     >
-      <Text>Sign in</Text>
-
-      <TextInput
-        autoCapitalize="none"
-        value={emailAddress}
-        placeholder="Enter email"
-        onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-      />
-      <TextInput
-        value={password}
-        placeholder="Enter password"
-        secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
-      />
-
-      <TouchableOpacity onPress={onSignInPress}>
-        <Text>Continue</Text>
-      </TouchableOpacity>
-
-      <View style={{ flexDirection: "row", gap: 4, marginTop: 10 }}>
-        <Text>Don’t have an account?</Text>
-        <Link href="/(auth)/sign-up">
-          <Text>Sign up</Text>
-        </Link>
+      <View style={styles.container}>
+        <Image
+          source={require("../../assets/images/revenue-i3.png")}
+          style={styles.illustration}
+        />
+        <Text>Welcome Back</Text>
+        {error ? (
+          <View style={styles.errorBox}>
+            <Ionicons name="alert-circle" size={20} color={COLORS.expense} />
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity onPress={() => setError("")}>
+              <Ionicons name="close" size={20} color={COLORS.textLight} />
+            </TouchableOpacity>
+          </View>
+        ) : null}
+        <TextInput
+          autoCapitalize="none"
+          value={emailAddress}
+          placeholder="Enter email"
+          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+        />
+        <TextInput
+          value={password}
+          placeholder="Enter password"
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+        />
+        <TouchableOpacity onPress={onSignInPress}>
+          <Text>Continue</Text>
+        </TouchableOpacity>
+        <View style={{ flexDirection: "row", gap: 4, marginTop: 10 }}>
+          <Text>Don’t have an account?</Text>
+          <Link href="/(auth)/sign-up">
+            <Text>Sign up</Text>
+          </Link>
+        </View>
       </View>
     </KeyboardAwareScrollView>
   );
