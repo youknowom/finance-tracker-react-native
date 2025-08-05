@@ -5,7 +5,7 @@ import { Link, useRouter } from "expo-router";
 import { styles } from "@assets/styles/auth.styles.js";
 import { COLORS } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-
+import { Image } from "expo-image";
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
@@ -65,52 +65,50 @@ export default function SignUpScreen() {
         ) : null}
 
         <TextInput
-          style={styles.input}
+          style={[styles.verificationInput, error && styles.errorinput]}
           value={code}
           placeholder="Enter your verification code"
-          onChangeText={setCode}
+          placeholderTextColor="#9AB478"
+          onChangeText={(code) => setCode(code)}
         />
-        <TouchableOpacity onPress={onVerifyPress}>
-          <Text>Verify</Text>
+        <TouchableOpacity onPress={onVerifyPress} style={styles.button}>
+          <Text style={styles.buttonText}>Verify</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text>Sign up</Text>
-      {error ? (
-        <View style={styles.errorBox}>
-          <Ionicons name="alert-circle" size={20} color={COLORS.expense} />
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity onPress={() => setError("")}>
-            <Ionicons name="close" size={20} color={COLORS.textLight} />
-          </TouchableOpacity>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={styles.container}>
+        <Image
+          source={require("../../assets/images/revenue-i2.png")}
+          style={styles.illustraion}
+        />
+        <Text>Sign up</Text>
+        <TextInput
+          autoCapitalize="none"
+          value={emailAddress}
+          placeholder="Enter email"
+          onChangeText={setEmailAddress}
+          style={styles.input}
+        />
+        <TextInput
+          value={password}
+          placeholder="Enter password"
+          secureTextEntry
+          onChangeText={setPassword}
+          style={styles.input}
+        />
+        <TouchableOpacity onPress={onSignUpPress}>
+          <Text>Continue</Text>
+        </TouchableOpacity>
+        <View style={{ flexDirection: "row", gap: 3 }}>
+          <Text>Already have an account?</Text>
+          <Link href="/sign-in">
+            <Text style={{ color: COLORS.link }}>Sign in</Text>
+          </Link>
         </View>
-      ) : null}
-      <TextInput
-        autoCapitalize="none"
-        value={emailAddress}
-        placeholder="Enter email"
-        onChangeText={setEmailAddress}
-        style={styles.input}
-      />
-      <TextInput
-        value={password}
-        placeholder="Enter password"
-        secureTextEntry
-        onChangeText={setPassword}
-        style={styles.input}
-      />
-      <TouchableOpacity onPress={onSignUpPress}>
-        <Text>Continue</Text>
-      </TouchableOpacity>
-      <View style={{ flexDirection: "row", gap: 3 }}>
-        <Text>Already have an account?</Text>
-        <Link href="/sign-in">
-          <Text style={{ color: COLORS.link }}>Sign in</Text>
-        </Link>
       </View>
     </View>
   );
