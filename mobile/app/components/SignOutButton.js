@@ -1,18 +1,46 @@
-import { useClerk } from "@clerk/clerk-expo";
-import * as Linking from "expo-linking";
-import { Text, TouchableOpacity } from "react-native";
+export default function SignUpScreen() {
+  const { isLoaded, signUp, setActive } = useSignUp();
+  const router = useRouter();
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-export const SignOutButton = () => {
-  // Use `useClerk()` to access the `signOut()` function
-  const { signOut } = useClerk();
-  const handleSignOut = async () => {
+  const onSignUpPress = async () => {
+    if (!isLoaded) return;
+    setIsLoading(true);
+    setError("");
+
+    if (!emailAddress.includes("@")) {
+      setError("Please enter a valid email address");
+      setIsLoading(false);
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      await signOut();
-      // Redirect to your desired page
+      await signUp.create({
+        emailAddress: emailAddress.trim(),
+        password,
+      });
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      setPendingVerification(true);
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
+      let errorMessage = "Sign up failed";
+      if (err.errors?.[0]?.longMessage) {
+        errorMessage = err.errors[0].longMessage;
+      }
+      setError(errorMessage);
       console.error(JSON.stringify(err, null, 2));
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -20,4 +48,4 @@ export const SignOutButton = () => {
       <Text>Sign out</Text>
     </TouchableOpacity>
   );
-};
+}

@@ -22,7 +22,10 @@ export default function SignUpScreen() {
     if (!isLoaded) return;
 
     try {
-      await signUp.create({ emailAddress, password });
+      await signUp.create({
+        emailAddress,
+        password,
+      });
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);
     } catch (err) {
@@ -30,6 +33,20 @@ export default function SignUpScreen() {
       console.error(JSON.stringify(err, null, 2));
     }
   };
+
+  // const onSignUpPress = async () => {
+  //   if (!isLoaded) return;
+
+  //   try {
+  //     await signUp.create({ emailAddress, password });
+
+  //     await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+  //     setPendingVerification(true);
+  //   } catch (err) {
+  //     setError(err.errors?.[0]?.message || "Sign up failed");
+  //     console.error(JSON.stringify(err, null, 2));
+  //   }
+  // };
 
   const onVerifyPress = async () => {
     if (!isLoaded) return;
