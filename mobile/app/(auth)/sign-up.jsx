@@ -85,7 +85,7 @@ export default function SignUpScreen() {
           source={require("../../assets/images/revenue-i2.png")}
           style={styles.illustration}
         />
-        <Text>Sign up</Text>
+        <Text style={styles.title}>Create Account</Text>
         <TextInput
           autoCapitalize="none"
           value={emailAddress}

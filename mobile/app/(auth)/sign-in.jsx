@@ -112,18 +112,8 @@ export default function Page() {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <Text>Sign in</Text>
-
-      {error ? (
-        <View style={styles.errorBox}>
-          <Ionicons name="alert-circle" size={20} color={COLORS.expense} />
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity onPress={() => setError("")}>
-            <Ionicons name="close" size={20} color={COLORS.textLight} />
-          </TouchableOpacity>
-        </View>
-      ) : null}
 
       <TextInput
         autoCapitalize="none"
