@@ -1,7 +1,6 @@
-import { View, Text } from "react-native";
 import React from "react";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
 import { COLORS } from "../../constants/colors";
 
 const SafeScreen = ({ children }) => {
@@ -15,7 +14,9 @@ const SafeScreen = ({ children }) => {
         backgroundColor: COLORS.background,
       }}
     >
-      {children}
+      {React.Children.map(children, (child) =>
+        typeof child === "string" ? null : child
+      )}
     </View>
   );
 };

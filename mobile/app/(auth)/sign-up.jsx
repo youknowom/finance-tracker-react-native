@@ -42,12 +42,16 @@ export default function SignUpScreen() {
     }
 
     try {
+      // ✅ FIXED: Correct key used here (emailAddress instead of identifier)
       await signUp.create({
-        identifier: emailAddress.trim(), // Changed to identifier
+        emailAddress: emailAddress.trim(),
         password,
       });
 
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      await signUp.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
+
       setPendingVerification(true);
     } catch (err) {
       let errorMessage = "Sign up failed";
@@ -87,6 +91,7 @@ export default function SignUpScreen() {
     }
   };
 
+  // ✅ VERIFICATION UI
   if (pendingVerification) {
     return (
       <View style={styles.verificationContainer}>
@@ -103,7 +108,7 @@ export default function SignUpScreen() {
         )}
 
         <TextInput
-          style={[styles.verificationInput, error && styles.errorinput]}
+          style={[styles.verificationInput, error && styles.errorInput]}
           value={code}
           placeholder="Enter your verification code"
           placeholderTextColor="#9AB478"
@@ -123,6 +128,7 @@ export default function SignUpScreen() {
     );
   }
 
+  // ✅ SIGN UP UI
   return (
     <KeyboardAwareScrollView
       style={{ flex: 1 }}
@@ -178,7 +184,7 @@ export default function SignUpScreen() {
         </TouchableOpacity>
 
         <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Already Have an account?</Text>
+          <Text style={styles.footerText}>Already have an account?</Text>
           <TouchableOpacity onPress={() => router.push("/sign-in")}>
             <Text style={styles.linkText}>Sign in</Text>
           </TouchableOpacity>
