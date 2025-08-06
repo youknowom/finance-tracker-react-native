@@ -1,51 +1,24 @@
-export default function SignUpScreen() {
-  const { isLoaded, signUp, setActive } = useSignUp();
-  const router = useRouter();
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [code, setCode] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+import { useClerk } from "@clerk/clerk-expo";
+import * as Linking from "expo-linking";
+import { Alert, Text, TouchableOpacity } from "react-native";
+import { styles } from "../../assets/styles/home.styles";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS } from "../../constants/colors";
 
-  const onSignUpPress = async () => {
-    if (!isLoaded) return;
-    setIsLoading(true);
-    setError("");
+export const SignOutButton = () => {
+  // Use `useClerk()` to access the `signOut()` function
+  const { signOut } = useClerk();
 
-    if (!emailAddress.includes("@")) {
-      setError("Please enter a valid email address");
-      setIsLoading(false);
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      await signUp.create({
-        emailAddress: emailAddress.trim(),
-        password,
-      });
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-      setPendingVerification(true);
-    } catch (err) {
-      let errorMessage = "Sign up failed";
-      if (err.errors?.[0]?.longMessage) {
-        errorMessage = err.errors[0].longMessage;
-      }
-      setError(errorMessage);
-      console.error(JSON.stringify(err, null, 2));
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSignOut = async () => {
+    Alert.alert("Logout", "Are you sure you want to logout?", [
+      { text: "Cancel", style: "cancel" },
+      { text: "Logout", style: "destructive", onPress: signOut },
+    ]);
   };
+
   return (
-    <TouchableOpacity onPress={handleSignOut}>
-      <Text>Sign out</Text>
+    <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
+      <Ionicons name="log-out-outline" size={22} color={COLORS.text} />
     </TouchableOpacity>
   );
-}
+};

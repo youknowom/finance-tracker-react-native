@@ -9,6 +9,7 @@ export default function RootLayout() {
     <ClerkProvider
       tokenCache={tokenCache}
       publishableKey="pk_test_ZW5hYmxpbmctZ3J1Yi04LmNsZXJrLmFjY291bnRzLmRldiQ"
+      expoRouterProxyUrl="https://mobile.expo.dev"
     >
       <SafeScreen>
         <StatusBar style="auto" />
