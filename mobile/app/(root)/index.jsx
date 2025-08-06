@@ -12,7 +12,8 @@ export default function Page() {
   useEffect(() => {
     loadData();
   }, [loadData]);
-  console.log("data is loaded", transactions);
+  console.log("transaactions", transactions);
+  console.log("summary:", summary);
   return (
     <View>
       <SignedIn>
