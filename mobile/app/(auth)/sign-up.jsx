@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { styles } from "@assets/styles/auth.styles.js";
@@ -42,7 +49,6 @@ export default function SignUpScreen() {
     }
 
     try {
-      // ✅ FIXED: Correct key used here (emailAddress instead of identifier)
       await signUp.create({
         emailAddress: emailAddress.trim(),
         password,
@@ -54,14 +60,12 @@ export default function SignUpScreen() {
 
       setPendingVerification(true);
     } catch (err) {
-      let errorMessage = "Sign up failed";
-      if (err.errors?.[0]?.longMessage) {
-        errorMessage = err.errors[0].longMessage;
-      } else if (err.errors?.[0]?.message) {
-        errorMessage = err.errors[0].message;
-      }
+      let errorMessage =
+        err.errors?.[0]?.longMessage ||
+        err.errors?.[0]?.message ||
+        "Sign up failed.";
       setError(errorMessage);
-      console.error(JSON.stringify(err, null, 2));
+      console.error("SIGNUP ERROR:", JSON.stringify(err, null, 2));
     } finally {
       setIsLoading(false);
     }
@@ -84,14 +88,41 @@ export default function SignUpScreen() {
         setError("Verification not complete. Try again.");
       }
     } catch (err) {
-      setError(err.errors?.[0]?.message || "Verification failed");
-      console.error(JSON.stringify(err, null, 2));
+      let errorMessage =
+        err.errors?.[0]?.longMessage ||
+        err.errors?.[0]?.message ||
+        "Verification failed.";
+      setError(errorMessage);
+      console.error("VERIFY ERROR:", JSON.stringify(err, null, 2));
     } finally {
       setIsLoading(false);
     }
   };
 
-  // ✅ VERIFICATION UI
+  const onResendCode = async () => {
+    if (!isLoaded) return;
+    try {
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      Alert.alert(
+        "Code Sent",
+        "A new verification code has been sent to your email."
+      );
+    } catch (err) {
+      console.error("RESEND ERROR:", JSON.stringify(err, null, 2));
+      Alert.alert("Error", "Unable to resend code. Please try again.");
+    }
+  };
+
+  const onStartOver = () => {
+    signUp.restartFlow();
+    setPendingVerification(false);
+    setEmailAddress("");
+    setPassword("");
+    setCode("");
+    setError("");
+  };
+
+  // 🔁 VERIFICATION UI
   if (pendingVerification) {
     return (
       <View style={styles.verificationContainer}>
@@ -110,25 +141,38 @@ export default function SignUpScreen() {
         <TextInput
           style={[styles.verificationInput, error && styles.errorInput]}
           value={code}
-          placeholder="Enter your verification code"
+          placeholder="Enter verification code"
           placeholderTextColor="#9AB478"
           onChangeText={(code) => setCode(code)}
           keyboardType="number-pad"
         />
+
         <TouchableOpacity
           onPress={onVerifyPress}
           style={[styles.button, isLoading && styles.disabledButton]}
           disabled={isLoading}
         >
-          <Text style={styles.buttonText}>
-            {isLoading ? "Verifying..." : "Verify"}
+          {isLoading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Verify</Text>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={onResendCode}>
+          <Text style={styles.linkText}>Resend Code</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={onStartOver} style={{ marginTop: 16 }}>
+          <Text style={[styles.linkText, { color: COLORS.expense }]}>
+            Start Over
           </Text>
         </TouchableOpacity>
       </View>
     );
   }
 
-  // ✅ SIGN UP UI
+  // 🆕 SIGN UP FORM UI
   return (
     <KeyboardAwareScrollView
       style={{ flex: 1 }}
@@ -158,8 +202,8 @@ export default function SignUpScreen() {
           autoCapitalize="none"
           autoCorrect={false}
           value={emailAddress}
-          placeholderTextColor="#9AB478"
           placeholder="Enter email"
+          placeholderTextColor="#9AB478"
           onChangeText={(email) => setEmailAddress(email)}
           keyboardType="email-address"
         />
@@ -178,15 +222,17 @@ export default function SignUpScreen() {
           onPress={onSignUpPress}
           disabled={isLoading}
         >
-          <Text style={styles.buttonText}>
-            {isLoading ? "Creating Account..." : "Sign Up"}
-          </Text>
+          {isLoading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Sign Up</Text>
+          )}
         </TouchableOpacity>
 
         <View style={styles.footerContainer}>
           <Text style={styles.footerText}>Already have an account?</Text>
           <TouchableOpacity onPress={() => router.push("/sign-in")}>
-            <Text style={styles.linkText}>Sign in</Text>
+            <Text style={styles.linkText}>Sign In</Text>
           </TouchableOpacity>
         </View>
       </View>
