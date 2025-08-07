@@ -16,7 +16,7 @@ export default function Page() {
       loadData();
     }
   }, [loadData]);
-
+  if (isLoading) return <pageLoader />;
   return (
     <View style={{ padding: 20 }}>
       <SignedIn>
