@@ -7,20 +7,28 @@ import { useEffect } from "react";
 
 export default function Page() {
   const { user } = useUser();
-  const { useTransactions, summary, isLoading, loading, deleteTransaction } =
-    useTransactions(user.id);
+
+  const { transactions, summary, isLoading, deleteTransaction, loadData } =
+    useTransactions(user?.id);
+
   useEffect(() => {
-    loadData();
+    if (loadData) {
+      loadData();
+    }
   }, [loadData]);
-  console.log("transaactions", transactions);
-  console.log("summary:", summary);
+
   return (
-    <View>
+    <View style={{ padding: 20 }}>
       <SignedIn>
         {user?.emailAddresses?.[0]?.emailAddress ? (
-          <Text>Hello {user.emailAddresses[0].emailAddress}</Text>
+          <>
+            <Text>Hello {user.emailAddresses[0].emailAddress}</Text>
+            <Text>Income: {summary.income}</Text>
+            <Text>Balance: {summary.balance}</Text>
+            <Text>Expenses: {summary.expences}</Text>
+          </>
         ) : (
-          <Text>Loading...</Text>
+          <Text>Loading user data...</Text>
         )}
         <SignOutButton />
       </SignedIn>
