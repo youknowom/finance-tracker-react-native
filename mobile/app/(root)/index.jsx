@@ -5,6 +5,7 @@ import { SignOutButton } from "@/components/SignOutButton";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useEffect } from "react";
 import PageLoader from "../components/PageLoader";
+import { styles } from "../../assets/styles/home.styles";
 
 export default function Page() {
   const { user } = useUser();
@@ -19,29 +20,26 @@ export default function Page() {
   }, [loadData]);
   if (isLoading) return <PageLoader />;
   return (
-    <View style={{ padding: 20 }}>
-      <SignedIn>
-        {user?.emailAddresses?.[0]?.emailAddress ? (
-          <>
-            <Text>Hello {user.emailAddresses[0].emailAddress}</Text>
-            <Text>Income: {summary.income}</Text>
-            <Text>Balance: {summary.balance}</Text>
-            <Text>Expenses: {summary.expences}</Text>
-          </>
-        ) : (
-          <Text>Loading user data...</Text>
-        )}
-        <SignOutButton />
-      </SignedIn>
-
-      <SignedOut>
-        <Link href="/(auth)/sign-in">
-          <Text>Sign in</Text>
-        </Link>
-        <Link href="/(auth)/sign-up">
-          <Text>Sign up</Text>
-        </Link>
-      </SignedOut>
+    <View style={styles.container}>
+      <View style={styles.content}>
+        {/* //header */}
+        <View style={styles.header}>
+          {/* //left */}
+          <View style={styles.headerLeft}>
+            <Image
+              source={require("../../assets/images/logo.png")}
+              style={styles.headerLogo}
+              resizeMode="contain"
+            />
+            <View style={styles.welcomeContainer}>
+              <Text style={styles.welcomeText}>Welcome,</Text>
+              <Text style={styles.usernameText}>
+                {user?.emailAddresses[0]?.emailAddress.split("@")[0]}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
