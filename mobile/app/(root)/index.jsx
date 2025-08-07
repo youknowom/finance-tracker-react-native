@@ -4,6 +4,7 @@ import { Text, View } from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useEffect } from "react";
+import PageLoader from "../components/PageLoader";
 
 export default function Page() {
   const { user } = useUser();
@@ -16,7 +17,7 @@ export default function Page() {
       loadData();
     }
   }, [loadData]);
-  if (isLoading) return <pageLoader />;
+  if (isLoading) return <PageLoader />;
   return (
     <View style={{ padding: 20 }}>
       <SignedIn>
