@@ -1,4 +1,4 @@
-import { ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { styles } from "../../assets/styles/home.styles";
 import { COLORS } from "../../constants/colors";
 
@@ -9,4 +9,5 @@ const PageLoader = () => {
     </View>
   );
 };
+
 export default PageLoader;

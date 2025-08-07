@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { styles } from "../assets/styles/home.styles";
-import { COLORS } from "../constants/colors";
-import { formatDate } from "../lib/utils";
+import { styles } from "../../assets/styles/home.styles";
+import { COLORS } from "../../constants/colors";
+import { formatDate } from "../../lib/utils";
 
 // Map categories to their respective icons
 const CATEGORY_ICONS = {
@@ -15,7 +15,7 @@ const CATEGORY_ICONS = {
   Other: "ellipsis-horizontal",
 };
 
-export const TransactionItem = ({ item, onDelete }) => {
+const TransactionItem = ({ item, onDelete }) => {
   const isIncome = parseFloat(item.amount) > 0;
   const iconName = CATEGORY_ICONS[item.category] || "pricetag-outline";
 
@@ -57,3 +57,4 @@ export const TransactionItem = ({ item, onDelete }) => {
     </View>
   );
 };
+export default TransactionItem;

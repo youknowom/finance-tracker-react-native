@@ -1,8 +1,8 @@
 import { View, Text } from "react-native";
-import { styles } from "../assets/styles/home.styles";
-import { COLORS } from "../constants/colors";
+import { styles } from "../../assets/styles/home.styles";
+import { COLORS } from "../../constants/colors";
 
-export const BalanceCard = ({ summary }) => {
+const BalanceCard = ({ summary }) => {
   return (
     <View style={styles.balanceCard}>
       <Text style={styles.balanceTitle}>Total Balance</Text>
@@ -27,3 +27,4 @@ export const BalanceCard = ({ summary }) => {
     </View>
   );
 };
+export default BalanceCard;
