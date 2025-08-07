@@ -9,3 +9,4 @@ const PageLoader = () => {
     </View>
   );
 };
+export default PageLoader;
